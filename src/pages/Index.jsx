@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Container, VStack, Button, Input, Table, Thead, Tbody, Tr, Th, Td, IconButton, useColorMode } from "@chakra-ui/react";
+import { Container, VStack, Button, Input, Table, Thead, Tbody, Tr, Th, Td, IconButton, useColorMode, useColorModeValue } from "@chakra-ui/react";
 import { FaPlus, FaTrash, FaDownload } from "react-icons/fa";
 import Papa from "papaparse";
 
@@ -52,13 +52,13 @@ const Index = () => {
   return (
     <Container centerContent maxW="container.xl" py={10}>
       <VStack spacing={4} width="100%">
-        <Button onClick={toggleColorMode}>
+        <Button onClick={toggleColorMode} bg={useColorModeValue("white", "gray.700")} color={useColorModeValue("black", "white")}>
           Toggle {colorMode === "light" ? "Dark" : "Light"}
         </Button>
         <Input type="file" accept=".csv" onChange={handleFileUpload} />
         {data.length > 0 && (
           <>
-            <Table variant="simple" colorScheme="teal">
+            <Table variant="simple" colorScheme={useColorModeValue("teal", "gray")}>
               <Thead>
                 <Tr>
                   {headers.map((header) => (
@@ -75,6 +75,8 @@ const Index = () => {
                         <Input
                           value={row[header] || ""}
                           onChange={(e) => handleInputChange(rowIndex, header, e.target.value)}
+                          bg={useColorModeValue("white", "gray.700")}
+                          color={useColorModeValue("black", "white")}
                         />
                       </Td>
                     ))}
@@ -83,6 +85,8 @@ const Index = () => {
                         aria-label="Remove row"
                         icon={<FaTrash />}
                         onClick={() => handleRemoveRow(rowIndex)}
+                        bg={useColorModeValue("white", "gray.700")}
+                        color={useColorModeValue("black", "white")}
                       />
                     </Td>
                   </Tr>
