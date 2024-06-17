@@ -13,16 +13,23 @@ const Index = () => {
       Papa.parse(file, {
         header: true,
         skipEmptyLines: true,
-        complete: (results) => {
-          setHeaders(Object.keys(results.data[0]));
-          setData(results.data);
+        complete: (result) => {
+          setHeaders(result.meta.fields);
+          setData(result.data);
+        },
+        error: (error) => {
+          console.error("Error parsing CSV file:", error);
         },
       });
     }
   };
 
   const handleAddRow = () => {
-    setData([...data, {}]);
+    const newRow = headers.reduce((acc, header) => {
+      acc[header] = "";
+      return acc;
+    }, {});
+    setData([...data, newRow]);
   };
 
   const handleRemoveRow = (index) => {
@@ -41,9 +48,9 @@ const Index = () => {
     document.body.removeChild(link);
   };
 
-  const handleInputChange = (index, key, value) => {
+  const handleInputChange = (index, header, value) => {
     const newData = [...data];
-    newData[index][key] = value;
+    newData[index][header] = value;
     setData(newData);
   };
 
@@ -68,7 +75,7 @@ const Index = () => {
                     {headers.map((header) => (
                       <Td key={header}>
                         <Input
-                          value={row[header] || ""}
+                          value={row[header]}
                           onChange={(e) => handleInputChange(rowIndex, header, e.target.value)}
                         />
                       </Td>
