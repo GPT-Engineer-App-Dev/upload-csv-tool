@@ -1,11 +1,13 @@
 import React, { useState } from "react";
-import { Container, VStack, Button, Input, Table, Thead, Tbody, Tr, Th, Td, IconButton } from "@chakra-ui/react";
+import { Container, VStack, Button, Input, Table, Thead, Tbody, Tr, Th, Td, IconButton, useColorMode } from "@chakra-ui/react";
 import { FaPlus, FaTrash, FaDownload } from "react-icons/fa";
 import Papa from "papaparse";
 
 const Index = () => {
   const [data, setData] = useState([]);
   const [headers, setHeaders] = useState([]);
+
+  const { colorMode, toggleColorMode } = useColorMode();
 
   const handleFileUpload = (event) => {
     const file = event.target.files[0];
@@ -50,10 +52,13 @@ const Index = () => {
   return (
     <Container centerContent maxW="container.xl" py={10}>
       <VStack spacing={4} width="100%">
+        <Button onClick={toggleColorMode}>
+          Toggle {colorMode === "light" ? "Dark" : "Light"}
+        </Button>
         <Input type="file" accept=".csv" onChange={handleFileUpload} />
         {data.length > 0 && (
           <>
-            <Table variant="simple">
+            <Table variant="simple" colorScheme="teal">
               <Thead>
                 <Tr>
                   {headers.map((header) => (
